@@ -15,7 +15,7 @@ In this work, the public database of biomedical literature PubMed was mined usin
 
 <br />
 
-<h1> Code <br>
+<h1> Code and Results <br>
 </h1>
 
 The code to automatically mine PubMed and generate these figures is placed in this repository
@@ -61,4 +61,11 @@ The code to automatically mine PubMed and generate these figures is placed in th
 ![Screenshot](figures/Fig6_DNA_Comp_2017_02_09.jpg)
 
 
+<h1>Extensions</h1>
+
+This code was used to develop an extension "Cancer immunotherapy literature analysis (PubMed papers and registered clinical trials)"  https://github.com/jnkather/immuno_literature. That repository contains the source codes and raw data that were used in the project:
+
+"Large-scale database mining reveals hidden trends and future directions for cancer immunotherapy" https://doi.org/10.1080/2162402X.2018.1444412
+
+This project was published in OncoImmunology. For a detailed description of the computational methods, please refer to the paper. Additional information is also available in the article supplements. The source code was tested in Matlab R2017a.
 
