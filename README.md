@@ -1,5 +1,5 @@
 # PubMed-Data-Mining
-Repositories used for the data mining of the public database of biomedical literature PubMed 
+Repositories used for the data mining of the public database of biomedical literature PubMed . The mining is performed with a series of queries from Matlab.
 
 
 <h1>Reference <br>
@@ -68,4 +68,3 @@ This code was used to develop an extension "Cancer immunotherapy literature anal
 "Large-scale database mining reveals hidden trends and future directions for cancer immunotherapy" https://doi.org/10.1080/2162402X.2018.1444412
 
 This project was published in OncoImmunology. For a detailed description of the computational methods, please refer to the paper. Additional information is also available in the article supplements. The source code was tested in Matlab R2017a.
-
