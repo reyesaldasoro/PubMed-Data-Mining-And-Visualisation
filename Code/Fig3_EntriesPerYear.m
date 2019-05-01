@@ -45,12 +45,12 @@ CancerEntriesURL        =  strcat(CancerKeyW_1,CancerKeyW_2,CancerKeyW_3,CancerK
 % the publication types. Find the "count" where the number of items of both
 % cases are listed and store in a matrix
 
-yearsAnalysis = 1950:2016;
+yearsAnalysis = 1950%:2016;
 EntriesPerDisease(8,67)=0;
 %% 1,2,3 Years, Total Entries, Cancer Entries
 % Run a series of queries to find out how many entries exist in PubMed for
 % Cancer and in total
-for counterYear =1:67
+for counterYear =1%:67
     year                                = yearsAnalysis(counterYear);
 
     EntriesPerDisease(1,year-1949)      = year;
