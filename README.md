@@ -1,5 +1,5 @@
-# PubMed-Data-Mining
-Repositories used for the data mining of the public database of biomedical literature PubMed . The mining is performed with a series of queries from Matlab.
+# PubMed-Data-Mining-And-Visualising
+Visualisation and data mining of the public database of biomedical literature PubMed . The mining is performed with a series of queries from Matlab.
 
 
 <h1>Reference <br>
