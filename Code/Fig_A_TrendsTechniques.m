@@ -1,0 +1,88 @@
+clear all
+
+%% Find out the occurrence of different terms related to cancer:
+
+allF                    = '%5BAll%20Fields%5D'; % all fields code
+%allF2                    = '%5BMeSH%20Terms%5D'; % all fields code
+basicURL                = 'https://www.ncbi.nlm.nih.gov/pubmed/?term=';
+CancerKeyWords          = {'neoplasms','cancer','tumor','neoplasm','tumors','oncology',...
+                           'metastasis','cancers',...
+                           'tumour','tumours','neoplasia'};
+                       
+KW_Pathology            =  strcat('%20(pathology',allF  );
+KW_Cancer               =  strcat('%20AND%20(cancer',allF);
+
+KW_ImageAnalysis        =  strcat('%20AND+%28%28%22image+processing%22',allF,'+OR+%28%22image+analysis%22',allF,'+%29');                       
+
+
+
+%%
+
+keywords={  'texture','Fourier','geometric','tracing','linear discriminant analysis',...
+            'thresholding','feature extraction',...
+            'scale space','tracking','clustering',...
+            'region growing','hessian','multiresolution',...
+            'mutual information','principal component analysis',...
+            'linear regression','self-organizing maps','ensemble',...
+            'transfer learning','convolutional neural',...
+            'machine learning','deep learning',''};
+
+
+numKeywords = numel(keywords);
+yearsAnalysis = 1970:2023;        
+        
+%%
+
+for index_kw=1:numKeywords
+    kw=keywords{index_kw};
+    
+    urlAddress          = strcat(basicURL,KW_Pathology,KW_Cancer,KW_ImageAnalysis,'%20AND%20%28%22',strrep(kw,' ','%20'),'%22',allF);
+    disp(index_kw)
+    PubMedURL                           = urlread(urlAddress);
+
+        location_init   = strfind(PubMedURL,'yearCounts');
+        location_fin    = strfind(PubMedURL,'startYear');
+        PubMedURL2      = strrep(PubMedURL(location_init+14:location_fin-11),' ','');
+        PubMedURL2      = strrep(PubMedURL2,'"','');
+        PubMedURL2      = strrep(PubMedURL2,']','');
+        PubMedURL2      = strrep(PubMedURL2,'[','');
+        years_tokens    = split(PubMedURL2,',');
+        %num_entries   = str2num(cell2mat(years_tokens(2:2:end)));
+        
+        for index_year=1:2:numel(years_tokens)
+            val_year    = str2double(years_tokens{index_year});
+            num_entries = str2double(years_tokens{index_year+1});
+            entries_per_KW(index_kw,round((val_year))-1966) = num_entries;
+        end
+end
+       
+%%
+years         = str2num(cell2mat(years_tokens(1:2:end)));     
+%allYears=str2num(cell2mat(years_tokens(1:2:end)));
+entries_per_KW_rel = entries_per_KW(1:numKeywords-1,:)./(1+repmat(entries_per_KW(numKeywords,:),[numKeywords-1 1]));
+
+%%
+numYears        = numel(years);
+initialYear     = 10;
+h0              = figure(1);
+h1              = gca;
+h11             = ribbon(entries_per_KW_rel');
+h1.YTick        = (3:5:numYears);
+h1.YTickLabel   = years(3:5:end);
+h1.YLim         = [initialYear numYears+1];
+h1.XTick        = (1:numKeywords);
+h1.XTickLabel   = keywords;
+h1.XLim         = [1 numKeywords];
+h1.ZLim         = [0 max(max(entries_per_KW_rel(initialYear:end,:)))];
+h1.XTickLabelRotation=270;
+h1.View         = [ 170.3979   32.7538];
+h1.Position     = [ 0.0679    0.3011    0.8905    0.6361];
+h1.FontSize     = 9
+%% 
+colormap1 = bone;
+%colormap1 =[linspace(0,1,32)'];
+%colormap1(end,3)=0;
+colormap1(:,3)=1;
+colormap2 = colormap1(end:-1:1,[3 2 1]);
+colormap3 = [colormap1;colormap2];
+colormap (colormap3)
