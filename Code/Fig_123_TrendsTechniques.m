@@ -6,6 +6,13 @@ allF                    = '%5BAll%20Fields%5D'; % all fields code
 %allF2                    = '%5BMeSH%20Terms%5D'; % all fields code
 basicURL                = 'https://www.ncbi.nlm.nih.gov/pubmed/?term=';
 
+yearsAnalysis           = 1990:2022;                            
+KW_Pathology            =  strcat('%20AND%20(pathology)');
+KW_Cancer               =  strcat('%20AND%20(cancer)');
+KW_ImageAnalysis        =  strcat('%20AND%20((image)+OR+(imaging))');                       
+KW_Dates                = strcat('%20AND%20(',num2str(yearsAnalysis(1)),':',num2str(yearsAnalysis(end)),'[dp])');
+
+
 keywords={  'texture analysis','Fourier','geometric','tracing','linear discriminant analysis',...
             'thresholding','feature extraction',...
             'tracking','clustering', ...%'scale space','hessian', 'self-organizing maps',...
@@ -15,7 +22,7 @@ keywords={  'texture analysis','Fourier','geometric','tracing','linear discrimin
             'transfer learning','convolutional neural',...
             'machine learning','deep learning',''};
 
-keywords2={  'texture analysis','Fourier','geometric','tracing','linear disc. anal.',...
+keywords2={ 'texture analysis','Fourier','geometric','tracing','linear disc. anal.',...
             'thresholding','feature extraction',...
             'tracking','clustering', ...%'scale space','hessian', 'self-organizing maps',...
             'region growing','mutual information','wavelet','multiresolution',...
@@ -26,11 +33,6 @@ keywords2={  'texture analysis','Fourier','geometric','tracing','linear disc. an
         
 numKeywords = numel(keywords);                       
                        
-yearsAnalysis           = 1990:2022;                            
-KW_Pathology            =  strcat('%20AND%20(pathology)');
-KW_Cancer               =  strcat('%20AND%20(cancer)');
-KW_ImageAnalysis        =  strcat('%20AND%20((image)+OR+(imaging))');                       
-KW_Dates                = strcat('%20AND%20(',num2str(yearsAnalysis(1)),':',num2str(yearsAnalysis(end)),'[dp])');
 
 
         
