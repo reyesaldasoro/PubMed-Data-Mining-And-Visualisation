@@ -1,35 +1,28 @@
 clear all
-
+close all
 %% Find out the occurrence of different terms related to cancer AND pathology AND keywords:
 
 allF                    = '%5BAll%20Fields%5D'; % all fields code
 %allF2                    = '%5BMeSH%20Terms%5D'; % all fields code
 basicURL                = 'https://www.ncbi.nlm.nih.gov/pubmed/?term=';
 
-keywords={  'texture analysis','Fourier','geometric','tracing','linear discriminant analysis',...
-            'thresholding','feature extraction',...
-            'tracking','clustering', ...%'scale space','hessian', 'self-organizing maps',...
-            'region growing','mutual information','wavelet','multiresolution',...
-            'principal component analysis',...
-            'linear regression','ensemble',...
-            'transfer learning','convolutional neural',...
-            'machine learning','deep learning',''};
-
-        
-        
-        
-keywords2={  'texture analysis','Fourier','geometric','tracing','linear disc. anal.',...
-            'thresholding','feature extraction',...
-            'tracking','clustering', ...%'scale space','hessian', 'self-organizing maps',...
-            'region growing','mutual information','wavelet','multiresolution',...
-            'principal comp. anal.',...
-            'linear regression','ensemble',...
-            'transfer learning','convolutional neural',...
-            'machine learning','deep learning',''};        
+keywords={'Deep belief',...
+    'Recurrent neural networks',...
+    'Auto-Encoders',...
+    'Multilayer perceptron',...
+    'Generative adversarial network',...
+    'Convolutional neural network',...
+    'U-Net',...
+    'Transformer',...
+    'Fully convolutional',...
+    'ResNet',...
+    'VGG','Mask-RCNN','LSTM',...
+    'GoogleNet','AlexNet','Inception-v3','DenseNet','Inception-ResNet-v2'};
+  
         
 numKeywords = numel(keywords);                       
                        
-yearsAnalysis           = 1990:2022;                            
+yearsAnalysis           = 2010:2022;                            
 KW_Pathology            =  strcat('%20AND%20(pathology)');
 KW_Cancer               =  strcat('%20AND%20(cancer)');
 KW_ImageAnalysis        =  strcat('%20AND%20((image)+OR+(imaging))');                       
@@ -37,6 +30,7 @@ KW_Dates                = strcat('%20AND%20(',num2str(yearsAnalysis(1)),':',num2
 
 
         
+
 %% Iterate over pubmed
 %clear entries_per_KW
 for index_kw=1:numKeywords
@@ -55,53 +49,60 @@ for index_kw=1:numKeywords
         years_tokens    = split(PubMedURL2,',');
         %num_entries   = str2num(cell2mat(years_tokens(2:2:end)));
         
-        for index_year=1:2:numel(years_tokens)
-            val_year    = str2double(years_tokens{index_year});
-            num_entries = str2double(years_tokens{index_year+1});
-            entries_per_KW(index_kw,round((val_year)-(yearsAnalysis(1)-1))) = num_entries;
+        numYearsResults = numel(years_tokens);
+        
+        if numYearsResults>1
+            for index_year=1:2:numYearsResults
+                val_year    = str2double(years_tokens{index_year});
+                num_entries = str2double(years_tokens{index_year+1});
+                if val_year>=yearsAnalysis(1)
+                    entries_per_KW(index_kw,round((val_year)-(yearsAnalysis(1)-1))) = num_entries;
+                end
+            end
         end
 end
-years         = str2num(cell2mat(years_tokens(1:2:end)));     
+   
        
-%% Prepare colormap
-colormap1 = bone;
-colormap1(:,3)=1;
-colormap2 = colormap1(end:-1:1,[3 2 1]);
-colormap3 = [colormap1;colormap2];
+
 
 %% Display as bar chart
 h01=figure(1);
 h20=gca;
 
-allEntries_KW = sum(entries_per_KW(1:end-1,:),2);
+allEntries_KW = sum(entries_per_KW(1:end,:),2);
 [entries_all,index_all]=sort(allEntries_KW,'descend');
 h21=bar(allEntries_KW(index_all));
-h20.XTick=1:numKeywords-1;
+h20.XTick=1:numKeywords;
 h20.XTickLabel=keywords(index_all);
 h20.XTickLabelRotation=270;
 h20.FontSize = 11;
 h20.YLabel.FontSize=16;
 h20.YLabel.String='Num. entries';
 h01.Position = [100  100  700  410];
-h20.Position     = [ 0.1    0.49    0.89   0.48];
+h20.Position     = [ 0.1    0.53    0.89   0.44];
 h20.FontName='Arial';
 grid on
-filename = 'Fig_A_TrendsTechniques.png';
-%print('-dpng','-r400',filename)
+ set(h20,'yscale','log')
+filename = 'Fig_6_Trends_DL.png';
+print('-dpng','-r400',filename)
 
-
+%% Prepare colormap
+colormap1 = bone;
+colormap1(:,3)=1;
+colormap2 = colormap1(end:-1:1,[3 2 1]);
+colormap3 = [colormap1;colormap2];
 %% Display as ribbons per year total
 %numYears        = numel(years);
 numYears        = round((val_year)-yearsAnalysis(1)-1);
 initialYear     = 1;
 h02              = figure(2);
 h1              = gca;
-h11             = ribbon(entries_per_KW(1:end-1,:)');
+h11             = ribbon(1+entries_per_KW(index_all,1:end-1)');
 h1.YTick        = (1:5:numYears);
-h1.YTickLabel   = years(1:5:end);
+h1.YTickLabel   = yearsAnalysis(1:5:end);
 %h1.YLim         = [initialYear numYears+1];
 h1.XTick        = (1:numKeywords);
-h1.XTickLabel   = keywords2;
+h1.XTickLabel   = keywords(index_all);
 %h1.XLim         = [1 numKeywords];
 %h1.ZLim         = [0 max(max(entries_per_KW(1:end-1,initialYear:end)))];
 h1.XTickLabelRotation=270;
@@ -114,6 +115,7 @@ h1.YLabel.String='Years';
 h1.YLabel.FontSize=16;
 h02.Position = [100  100  700  410];
 colormap (colormap3)
+h1.ZScale='log';
 %% Obtain relative number of entries
 % First, relative to all entries of the year without the keyword
 entries_per_KW_rel  = entries_per_KW(1:numKeywords-1,:)./...
