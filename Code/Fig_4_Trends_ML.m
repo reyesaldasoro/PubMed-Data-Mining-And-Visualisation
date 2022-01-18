@@ -75,11 +75,7 @@ for index_kw=1:numKeywords
 end
 years         = str2num(cell2mat(years_tokens(1:2:end)));     
 %years         = str2num(yearsAnalysis);  
-%% Prepare colormap
-colormap1 = bone;
-colormap1(:,3)=1;
-colormap2 = colormap1(end:-1:1,[3 2 1]);
-colormap3 = [colormap1;colormap2];
+
 
 %% Display as bar chart
 h01=figure(12);
@@ -94,15 +90,21 @@ h20.XTickLabelRotation=270;
 h20.FontSize = 11;
 h20.YLabel.FontSize=16;
 h20.YLabel.String='Num. entries';
+h20.YTick=[1 10 100 1000 10000];
+h20.YLim=[1 1.2*max(allEntries_KW)];
 h01.Position = [100  100  700  410];
-h20.Position     = [ 0.1    0.49    0.89   0.48];
+h20.Position     = [ 0.1    0.49    0.89   0.44];
 h20.FontName='Arial';
 grid on
  set(h20,'yscale','log')
 
 %print('-dpng','-r400',filename)
 
-
+%% Prepare colormap
+colormap1 = bone;
+colormap1(:,3)=1;
+colormap2 = colormap1(end:-1:1,[3 2 1]);
+colormap3 = [colormap1;colormap2];
 %% Display as ribbons per year total
 %numYears        = numel(years);
 numYears        = round((val_year)-yearsAnalysis(1)-1);
