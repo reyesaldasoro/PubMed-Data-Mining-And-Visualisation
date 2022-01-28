@@ -84,7 +84,7 @@ end
 
 
 %% Display as bar chart
-h0=figure(10);
+h0=figure(1);
 h01=subplot(121);
 
 allEntries_KW = sum(entries_per_KW_Cancer(:,:),2);
@@ -130,7 +130,7 @@ colormap3 = [colormap1;colormap2];
 numYears        = round((val_year)-yearsAnalysis(1)-1);
 initialYear     = 1;
 
-h1=figure(11);
+h1=figure(1);
 h11=subplot(121);
 
 h111             = ribbon(1+entries_per_KW_Cancer(index_all,1:end-1)');
@@ -170,7 +170,7 @@ h12.ZLabel.FontSize=16;
 h12.YLabel.String='Years';
 h12.YLabel.FontSize=16;
 
-%%
+
 h11.Title.String='All keywords';
 h12.Title.String='Date and prog. language';
 h11.Position     = [ 0.09    0.15    0.38   0.75];
