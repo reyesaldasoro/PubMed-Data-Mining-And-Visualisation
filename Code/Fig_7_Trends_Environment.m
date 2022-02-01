@@ -9,9 +9,11 @@ basicURL                = 'https://www.ncbi.nlm.nih.gov/pubmed/?term=';
 keywords={'Matlab',...
           '(Python)%20NOT%20(snake)%20NOT%20(python%20regius)',...
           '(%22R%20package%22)%20OR%20(Rstudio)%20OR%20(R/Shiny)',...
-          '(%22C programming%22)%20OR%20(%22C language%22)%20OR%20(%22C package%22)' };
+          '(%22C programming%22)%20OR%20(%22C language%22)%20OR%20(%22C package%22)',...
+          'QuPath','CellProfiler',...
+          '(Fiji)%20NOT%20(suva)%20NOT%20(pacific)','ImageJ'};
     
-keywords2={'Matlab','Python','R','C'};
+keywords2={'Matlab','Python','R','C','QuPath','CellProfiler','Fiji','ImageJ'};
         
 numKeywords = numel(keywords);                       
                        
@@ -97,28 +99,28 @@ h01.FontSize = 11;
 h01.YLabel.FontSize=16;
 h01.YLabel.String='Num. entries';
 h0.Position = [100  100  700  410];
-h01.Position     = [ 0.09    0.15    0.38   0.75];
+h01.Position     = [ 0.09    0.26    0.38   0.67];
 h01.FontName='Arial';
 grid on
 % set(h20,'yscale','log')
 h02=subplot(122);
 
 allEntries_KW = sum(entries_per_KW_all(:,:),2);
-[entries_all,index_all]=sort(allEntries_KW,'descend');
-h21=bar(allEntries_KW(index_all));
+[entries_all,index_all2]=sort(allEntries_KW,'descend');
+h21=bar(allEntries_KW(index_all2));
 h02.XTick=1:numKeywords;
-h02.XTickLabel=keywords2(index_all);
+h02.XTickLabel=keywords2(index_all2);
 h02.XTickLabelRotation=270;
 h02.FontSize = 11;
 h02.YLabel.FontSize=16;
 h02.YLabel.String='Num. entries';
-h0.Position = [100  100  700  410];
-h02.Position     = [ 0.59    0.15    0.38   0.75];
+h0.Position = [100  170  700  310];
+h02.Position     = [ 0.59    0.26    0.38   0.67];
 h02.FontName='Arial';
 grid on
 %print('-dpng','-r400',filename)
 h01.Title.String='All keywords';
-h02.Title.String='Date and prog. language';
+h02.Title.String='Date and prog. language / software';
 
 %% Prepare colormap
 colormap1 = bone;
@@ -130,7 +132,7 @@ colormap3 = [colormap1;colormap2];
 numYears        = round((val_year)-yearsAnalysis(1)-1);
 initialYear     = 1;
 
-h1=figure(1);
+h1=figure(2);
 h11=subplot(121);
 
 h111             = ribbon(1+entries_per_KW_Cancer(index_all,1:end-1)');
@@ -142,7 +144,7 @@ h11.XTickLabel   = keywords2(index_all);
 %h11.XLim         = [1 numKeywords];
 %h11.ZLim         = [0 max(max(entries_per_KW(1:end-1,initialYear:end)))];
 h11.XTickLabelRotation=0;
-h11.View         = [ 160 20];
+
 h11.FontSize     = 10;
 axis tight
 h11.ZLabel.String='Entries';
@@ -153,16 +155,16 @@ h1.Position = [100  100  700  410];
 
 h12=subplot(122);
 
-h112             = ribbon(1+entries_per_KW_all(index_all,1:end-1)');
+h112             = ribbon(1+entries_per_KW_all(index_all2,1:end-1)');
 h12.YTick        = (1:5:numYears);
 h12.YTickLabel   = yearsAnalysis(1:5:end);
 %h12.YLim         = [initialYear numYears+1];
 h12.XTick        = (1:numKeywords);
-h12.XTickLabel   = keywords2(index_all);
+h12.XTickLabel   = keywords2(index_all2);
 %h12.XLim         = [1 numKeywords];
 %h12.ZLim         = [0 max(max(entries_per_KW(1:end-1,initialYear:end)))];
 h12.XTickLabelRotation=0;
-h12.View         = [ 160 20];
+
 h12.FontSize     = 10;
 axis tight
 h12.ZLabel.String='Entries';
@@ -172,16 +174,18 @@ h12.YLabel.FontSize=16;
 
 
 h11.Title.String='All keywords';
-h12.Title.String='Date and prog. language';
-h11.Position     = [ 0.09    0.15    0.38   0.75];
-h12.Position     = [ 0.59    0.15    0.38   0.75];
-
-h11.View        = [74 20];
-h12.View        = [74 20];
+h12.Title.String='Date and prog. language / software';
+h11.Position     = [ 0.09    0.15    0.36   0.75];
+h12.Position     = [ 0.59    0.15    0.36   0.75];
+%
+h11.View        = [50 20];
+h12.View        = [50 20];
+%
 colormap (colormap3)
 
 
-
+h11.XTickLabelRotation=20;
+h12.XTickLabelRotation=20;
 %% assign names and print
 
 filename = 'Fig_7_TrendsEnvironments.png';
