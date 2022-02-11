@@ -15,18 +15,18 @@ KW_Dates                = strcat('%20AND%20(',num2str(yearsAnalysis(1)),':',num2
 
 keywords={  'texture analysis','Fourier','geometric','tracing','linear discriminant analysis',...
             'thresholding','feature extraction',...
-            'tracking','clustering', ...%'scale space','hessian', 'self-organizing maps',...
+            'tracking','clustering', 'scale space','hessian', 'self-organizing',...
             'region growing','mutual information','wavelet','multiresolution',...
-            'principal component analysis',...
+            'principal component analysis','filtering','active contour','fractal',...
             'linear regression','ensemble',...
             'transfer learning','convolutional neural',...
             'machine learning','deep learning',''};
 
 keywords2={ 'texture analysis','Fourier','geometric','tracing','linear disc. anal.',...
             'thresholding','feature extraction',...
-            'tracking','clustering', ...%'scale space','hessian', 'self-organizing maps',...
+            'tracking','clustering', 'scale space','hessian', 'self-organizing',...
             'region growing','mutual information','wavelet','multiresolution',...
-            'principal comp. anal.',...
+            'principal comp. anal.','filtering','active contour','fractal',...
             'linear regression','ensemble',...
             'transfer learning','convolutional neural',...
             'machine learning','deep learning',''};        
@@ -62,11 +62,7 @@ for index_kw=1:numKeywords
 end
 years         = str2num(cell2mat(years_tokens(1:2:end)));     
        
-%% Prepare colormap
-colormap1 = bone;
-colormap1(:,3)=1;
-colormap2 = colormap1(end:-1:1,[3 2 1]);
-colormap3 = [colormap1;colormap2];
+
 
 %% Display as bar chart
 h01=figure(1);
@@ -74,15 +70,15 @@ h20=gca;
 
 allEntries_KW = sum(entries_per_KW(1:end-1,:),2);
 [entries_all,index_all]=sort(allEntries_KW,'descend');
-h21=bar(allEntries_KW(index_all));
+h21=bar(allEntries_KW(index_all(end:-1:1)));
 h20.XTick=1:numKeywords-1;
-h20.XTickLabel=keywords(index_all);
+h20.XTickLabel=keywords2(index_all(end:-1:1));
 h20.XTickLabelRotation=270;
 h20.FontSize = 11;
 h20.YLabel.FontSize=16;
 h20.YLabel.String='Num. entries';
 h01.Position = [100  100  700  410];
-h20.Position     = [ 0.1    0.49    0.89   0.48];
+h20.Position     = [ 0.1    0.38    0.89   0.58];
 h20.FontName='Arial';
 grid on
 filename = 'Fig_A_TrendsTechniques.png';
@@ -90,17 +86,23 @@ filename = 'Fig_A_TrendsTechniques.png';
 
 
 %% Display as ribbons per year total
+% Prepare colormap
+colormap1 = bone;
+colormap1(:,3)=1;
+colormap2 = colormap1(end:-1:1,[3 2 1]);
+colormap3 = [colormap1;colormap2];
+
 %numYears        = numel(years);
 numYears        = round((val_year)-yearsAnalysis(1)-1);
 initialYear     = 1;
 h02              = figure(2);
 h1              = gca;
-h11             = ribbon(entries_per_KW(1:end-1,:)');
+h11             = ribbon(entries_per_KW(index_all,1:end-1)');
 h1.YTick        = (1:5:numYears);
 h1.YTickLabel   = years(1:5:end);
 %h1.YLim         = [initialYear numYears+1];
 h1.XTick        = (1:numKeywords);
-h1.XTickLabel   = keywords2;
+h1.XTickLabel   = keywords2(index_all);
 %h1.XLim         = [1 numKeywords];
 %h1.ZLim         = [0 max(max(entries_per_KW(1:end-1,initialYear:end)))];
 h1.XTickLabelRotation=270;
@@ -124,12 +126,12 @@ entries_per_KW_rel2 = entries_per_KW(1:numKeywords-1,:)./...
 %% Display as relative metrics
 h03              = figure(3);
 h2              = subplot(211);
-h22             = ribbon(entries_per_KW_rel2');
+h22             = ribbon(entries_per_KW_rel2(index_all(end:-1:1),:)');
 h2.YTick        = (1:10:numYears);
 h2.YTickLabel   = years(1:10:end);
 %h2.YLim         = [initialYear numYears+1];
 h2.XTick        = (1:numKeywords);
-h2.XTickLabel   = keywords;
+h2.XTickLabel   = keywords2(index_all);
 %h2.XLim         = [1 numKeywords];
 %h2.ZLim         = [0 max(max(entries_per_KW_rel2(:,initialYear:end)))];
 h2.XTickLabelRotation=270;
@@ -149,31 +151,31 @@ h2.FontName='Arial';%
 %print('-dpng','-r400',filename)
 %
 %h03              = figure(3);
-h3              = subplot(212);
-h32             = ribbon(entries_per_KW_rel');
-h3.YTick        = (1:10:numYears);
-h3.YTickLabel   = years(1:10:end);
-%h3.YLim         = [initialYear numYears+1];
-h3.XTick        = (1:numKeywords);
-h3.XTickLabel   = keywords2;
-%h3.XLim         = [1 numKeywords];
-%h3.ZLim         = [0 max(max(entries_per_KW_rel(:,initialYear:end)))];
-h3.XTickLabelRotation=270;
-h3.View         = [ 170.3979   32.7538];
-h3.FontSize     = 10;
-axis tight
-
-h3.ZLabel.String='Entries/Year Total';
-h3.ZLabel.FontSize=16;
-h3.YLabel.String='';
-h3.YLabel.FontSize=16;
+% h3              = subplot(212);
+% h32             = ribbon(entries_per_KW_rel');
+% h3.YTick        = (1:10:numYears);
+% h3.YTickLabel   = years(1:10:end);
+% %h3.YLim         = [initialYear numYears+1];
+% h3.XTick        = (1:numKeywords);
+% h3.XTickLabel   = keywords2;
+% %h3.XLim         = [1 numKeywords];
+% %h3.ZLim         = [0 max(max(entries_per_KW_rel(:,initialYear:end)))];
+% h3.XTickLabelRotation=270;
+% h3.View         = [ 170.3979   32.7538];
+% h3.FontSize     = 10;
+% axis tight
+% 
+% h3.ZLabel.String='Entries/Year Total';
+% h3.ZLabel.FontSize=16;
+% h3.YLabel.String='';
+% h3.YLabel.FontSize=16;
 colormap (colormap3)
 %
 h03.Position = [100  100  700  510];
-h2.XTickLabel=[];
-h2.Position     = [ 0.11    0.62    0.8605    0.35];
+%h2.XTickLabel=[];
+h2.Position     = [ 0.11    0.26    0.8605    0.65];
 
-h3.Position     = [ 0.11    0.26    0.8605    0.35];
+%h3.Position     = [ 0.11    0.26    0.8605    0.35];
 h3.FontName='Arial';
 filename = 'Fig_B_TrendsTechniquesYears.png';
 %print('-dpng','-r400',filename)
