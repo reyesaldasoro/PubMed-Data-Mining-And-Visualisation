@@ -6,7 +6,7 @@ allF                    = '%5BAll%20Fields%5D'; % all fields code
 %allF2                    = '%5BMeSH%20Terms%5D'; % all fields code
 basicURL                = 'https://www.ncbi.nlm.nih.gov/pubmed/?term=';
 
-keywords={'Matlab',...
+keywords={'(Matlab))%20NOT%20((rural)%20AND%20(bangladesh))',...
           '(Python)%20NOT%20(snake)%20NOT%20(python%20regius)',...
           '(%22R%20package%22)%20OR%20(Rstudio)%20OR%20(R/Shiny)',...
           '(%22C programming%22)%20OR%20(%22C language%22)%20OR%20(%22C package%22)',...
@@ -30,7 +30,7 @@ KW_Dates                = strcat('%20AND%20(',num2str(yearsAnalysis(1)),':',num2
 %% Iterate over pubmed 
 % Run twice, one with all the keywords and one with only the language and dates
 clear entries_per_KW*
-for index_kw=1:numKeywords
+for index_kw=7%1:numKeywords
     kw=keywords{index_kw};    
     urlAddress          = strcat(basicURL,'%20%28',strrep(kw,' ','%20'),'%29',KW_Pathology,KW_Cancer,KW_ImageAnalysis,KW_Dates);
     disp(index_kw)
@@ -56,7 +56,7 @@ for index_kw=1:numKeywords
             end
         end
 end
-
+%%
 for index_kw=1:numKeywords
     kw=keywords{index_kw};    
     urlAddress          = strcat(basicURL,'%20%28',strrep(kw,' ','%20'),'%29',KW_Dates);
