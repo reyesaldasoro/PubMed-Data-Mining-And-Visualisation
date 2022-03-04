@@ -92,6 +92,8 @@ end
 
 %% Display as bar chart
 h0=figure(1);
+h0.Position = [100  100  700  410];
+
 h01=subplot(121);
 
 allEntries_KW = sum(entries_per_KW_all(:,:),2);
@@ -103,31 +105,31 @@ h01.XTickLabelRotation=270;
 h01.FontSize = 11;
 h01.YLabel.FontSize=16;
 h01.YLabel.String='Num. entries';
-h0.Position = [100  100  700  410];
+
 h01.Position     = [ 0.09    0.26    0.38   0.67];
 h01.FontName='Arial';
 grid on
-% set(h01,'yscale','log')
+h01.YScale='log';
 %%
-yearsAnalysis           = 2010:2022;   
-h02=subplot(122);
-
-allEntries_KW = sum(entries_per_KW_all(:,:),2);
-[entries_all,index_all2]=sort(allEntries_KW,'descend');
-h21=bar(allEntries_KW(index_all2(end:-1:1)));
-h02.XTick=1:numKeywords;
-h02.XTickLabel=keywords2(index_all2(end:-1:1));
-h02.XTickLabelRotation=270;
-h02.FontSize = 11;
-h02.YLabel.FontSize=16;
-h02.YLabel.String='Num. entries';
-h0.Position = [100  170  700  310];
-h02.Position     = [ 0.59    0.26    0.38   0.67];
-h02.FontName='Arial';
-grid on
-%print('-dpng','-r400',filename)
-h01.Title.String='All keywords';
-h02.Title.String='Date and prog. language / software';
+% yearsAnalysis           = 2010:2022;   
+% h02=subplot(122);
+% 
+% allEntries_KW = sum(entries_per_KW_all(:,:),2);
+% [entries_all,index_all2]=sort(allEntries_KW,'descend');
+% h21=bar(allEntries_KW(index_all2(end:-1:1)));
+% h02.XTick=1:numKeywords;
+% h02.XTickLabel=keywords2(index_all2(end:-1:1));
+% h02.XTickLabelRotation=270;
+% h02.FontSize = 11;
+% h02.YLabel.FontSize=16;
+% h02.YLabel.String='Num. entries';
+% h0.Position = [100  170  700  310];
+% h02.Position     = [ 0.59    0.26    0.38   0.67];
+% h02.FontName='Arial';
+% grid on
+% %print('-dpng','-r400',filename)
+% h01.Title.String='All keywords';
+% h02.Title.String='Date and prog. language / software';
 
 %% Prepare colormap
 colormap1 = bone;
@@ -174,69 +176,69 @@ colormap2=[...
 colormap3=colormap2(1:numKeywords+numKeywords2,:);
 
 %% Display as ribbons per year total
-%numYears        = numel(years);
-numYears        = round((val_year)-yearsAnalysis(1)-1);
-initialYear     = 1;
-
-h1=figure(2);
-h11=subplot(121);
-
-h111             = ribbon(1+entries_per_KW_Cancer(index_all,1:end-1)');
-h11.YTick        = (1:5:numYears);
-h11.YTickLabel   = yearsAnalysis(1:5:end);
-%h11.YLim         = [initialYear numYears+1];
-h11.XTick        = (1:numKeywords);
-h11.XTickLabel   = keywords2(index_all);
-%h11.XLim         = [1 numKeywords];
-%h11.ZLim         = [0 max(max(entries_per_KW(1:end-1,initialYear:end)))];
-h11.XTickLabelRotation=0;
-
-h11.FontSize     = 10;
-axis tight
-h11.ZLabel.String='Entries';
-h11.ZLabel.FontSize=16;
-h11.YLabel.String='Years';
-h11.YLabel.FontSize=16;
-h1.Position = [100  100  700  410];
+% %numYears        = numel(years);
+% numYears        = round((val_year)-yearsAnalysis(1)-1);
+% initialYear     = 1;
+% 
+% %h1=figure(2);
+% h11=subplot(122);
+% 
+% h111             = ribbon(1+entries_per_KW_all(index_all,1:end-1)');
+% h11.YTick        = (1:5:numYears);
+% h11.YTickLabel   = yearsAnalysis(1:5:end);
+% %h11.YLim         = [initialYear numYears+1];
+% h11.XTick        = (1:numKeywords);
+% h11.XTickLabel   = keywords2(index_all);
+% %h11.XLim         = [1 numKeywords];
+% %h11.ZLim         = [0 max(max(entries_per_KW(1:end-1,initialYear:end)))];
+% h11.XTickLabelRotation=0;
+% 
+% h11.FontSize     = 10;
+% axis tight
+% h11.ZLabel.String='Entries';
+% h11.ZLabel.FontSize=16;
+% h11.YLabel.String='Years';
+% h11.YLabel.FontSize=16;
+% h1.Position = [100  100  700  410];
 %%
 
 yearsAnalysis           = 2010:2022;   
 numYears        = round((val_year)-yearsAnalysis(1)-1);
-h12=subplot(122);
+h02=subplot(122);
 
 h112             = ribbon(1+entries_per_KW_all(index_all,1:end-1)');
-h12.YTick        = (1:5:numYears);
-h12.YTickLabel   = yearsAnalysis(1:5:end);
-%h12.YLim         = [initialYear numYears+1];
-h12.XTick        = (1:numKeywords+numKeywords2);
-h12.XTickLabel   = keywords2(index_all);
-%h12.XLim         = [1 numKeywords];
-%h12.ZLim         = [0 max(max(entries_per_KW(1:end-1,initialYear:end)))];
-h12.XTickLabelRotation=0;
+h02.YTick        = (1:5:numYears);
+h02.YTickLabel   = yearsAnalysis(1:5:end);
+%h02.YLim         = [initialYear numYears+1];
+h02.XTick        = (1:numKeywords+numKeywords2);
+h02.XTickLabel   = keywords2(index_all);
+%h02.XLim         = [1 numKeywords];
+%h02.ZLim         = [0 max(max(entries_per_KW(1:end-1,initialYear:end)))];
+h02.XTickLabelRotation=0;
 
-h12.FontSize     = 10;
+h02.FontSize     = 10;
 axis tight
-h12.ZLabel.String='Num. Entries';
-h12.ZLabel.FontSize=16;
-h12.YLabel.String='Years';
-h12.YLabel.FontSize=16;
+h02.ZLabel.String='Num. Entries';
+h02.ZLabel.FontSize=16;
+h02.YLabel.String='Years';
+h02.YLabel.FontSize=16;
 
 
-h11.Title.String='All keywords';
-%h12.Title.String='Date and prog. language / software';
-h11.Position     = [ 0.09    0.15    0.36   0.75];
-h12.Position     = [ 0.57    0.19    0.36   0.75];
+%h11.Title.String='All keywords';
+%h02.Title.String='Date and prog. language / software';
+h01.Position     = [ 0.09    0.21    0.36   0.75];
+h02.Position     = [ 0.57    0.19    0.36   0.75];
 %
-h12.View        = [50 20];
-%h12.View        = [170 30];
+h02.View        = [50 20];
+%h02.View        = [170 30];
 %
 colormap (colormap3)
 
-h12.ZScale = 'log';
-h12.XTickLabelRotation=270;
+h02.ZScale = 'log';
+h02.XTickLabelRotation=270;
 %%
 for i = 1:numKeywords+numKeywords2
-    h12.XTickLabel{i} = [sprintf('\\color[rgb]{%f,%f,%f}%s',colormap3(i,:)) h12.XTickLabel{i}];
+    h02.XTickLabel{i} = [sprintf('\\color[rgb]{%f,%f,%f}%s',colormap3(i,:)) h02.XTickLabel{i}];
 end
 %%
 axis([0.5 9.5 1 12 1 max(entries_per_KW_all(:))])
