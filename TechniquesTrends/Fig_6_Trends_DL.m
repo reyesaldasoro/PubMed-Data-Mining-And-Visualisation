@@ -71,20 +71,23 @@ h20=gca;
 
 allEntries_KW = sum(entries_per_KW(1:end,:),2);
 [entries_all,index_all]=sort(allEntries_KW,'descend');
-h21=bar(allEntries_KW(index_all(end:-1:1)));
+h21=bar(1+allEntries_KW(index_all(end:-1:1)));
 h20.XTick=1:numKeywords;
 h20.XTickLabel=keywords(index_all(end:-1:1));
 h20.XTickLabelRotation=270;
 h20.FontSize = 11;
 h20.YLabel.FontSize=16;
-h20.YLabel.String='Num. entries';
+h20.YLabel.String='Number of entries';
 h01.Position = [100  100  700  410];
 h20.Position     = [ 0.1    0.53    0.89   0.44];
 h20.FontName='Arial';
 grid on
- set(h20,'yscale','log')
+
+ set(gca,'yscale','log')
+h20.YLim=[1 1000];
+h20.YTick=[1 10 100 1000];
 filename = 'Fig_6_Trends_DL.png';
-print('-dpng','-r400',filename)
+%print('-dpng','-r400',filename)
 
 %% Prepare colormap
 colormap1 = bone;
