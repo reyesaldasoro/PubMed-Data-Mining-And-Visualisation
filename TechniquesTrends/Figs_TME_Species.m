@@ -42,7 +42,7 @@ KW_Dates                = strcat('%20AND%20(',num2str(yearsAnalysis(1)),':',num2
 
 keywords={'Mouse model','Rat Model','Zebrafish Model','xenograft','organoids','microfluidic',...
            'scoring model','prediction model','risk model','integrative model','model disease','in vitro model',...
-           'in vivo model','in ovo model','in vitro model','3D model','tumor on a chip model','Mathematical model','Computational model',''};
+           'in vivo model','in ovo model','in silico model','3D model','tumor on a chip model','Mathematical model','Computational model',''};
          
                        
 numKeywords = numel(keywords);                       
