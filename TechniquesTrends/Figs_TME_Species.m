@@ -25,10 +25,11 @@
 %--------------------------------------------------------------------------
 
 
-clear all
 close all
-cd('C:\Users\sbbk034\OneDrive - City, University of London\Documents\GitHub\PubMed-Data-Mining-And-Visualisation\TechniquesTrends')
 
+cd('C:\Users\sbbk034\OneDrive - City, University of London\Documents\GitHub\PubMed-Data-Mining-And-Visualisation\TechniquesTrends')
+%%
+clear all
 
 %% Find out the occurrence of different terms related to cancer AND pathology AND keywords:
 
@@ -37,12 +38,13 @@ allF                    = '%5BAll%20Fields%5D'; % all fields code
 basicURL                = 'https://www.ncbi.nlm.nih.gov/pubmed/?term=';
 
 yearsAnalysis           = 1980:2023;                            
-KW_TME            =  strcat('%20AND%20(tumor)%20AND%20(microenvironment)%20AND%20(model)');
+KW_TME            =  strcat('%20AND%20((%22tumor%20microenvironment%22)%20OR%20(%22tumour%20microenvironment%22))');
 KW_Dates                = strcat('%20AND%20(',num2str(yearsAnalysis(1)),':',num2str(yearsAnalysis(end)),'[dp])');
 
-keywords={'Mouse model','Rat Model','Zebrafish Model','xenograft','organoids','microfluidic',...
-           'scoring model','prediction model','risk model','integrative model','model disease','in vitro model',...
-           'in vivo model','in ovo model','in silico model','3D model','tumor on a chip model','Mathematical model','Computational model',''};
+keywords={  'Animal model','Mouse model','Rat model','Zebrafish model','Xenograft model','Organoid model',...%'model disease'
+            'In vitro model','In vivo model','3D model','Tumor on a chip model','Microfluidic model',...  
+            'Scoring model','Prediction model','Risk model','Integrative model','Mathematical model',...
+            'In silico model','Computational model','Deep Learning model','Machine Learning model','Prognostic model',''};
          
                        
 numKeywords = numel(keywords);                       
@@ -74,27 +76,28 @@ end
 years         = str2num(cell2mat(years_tokens(1:2:end)));     
        
 %% Display as bar chart
-h01=figure(1);
+h01=figure(12);
 h20=gca;
 
 allEntries_KW = sum(entries_per_KW(1:end-1,:),2);
 [entries_all,index_all]=sort(allEntries_KW,'ascend');
 h21=bar(allEntries_KW(index_all(end:-1:1)));
+%h21=bar(allEntries_KW(index_all(end:-1:1))/sum(entries_per_KW(end,:)));
 h20.XTick=1:numKeywords-1;
 h20.XTickLabel=keywords(index_all(end:-1:1));
 h20.XTickLabelRotation=270;
 h20.FontSize = 11;
-h20.YLabel.FontSize=16;
-h20.YLabel.String='Num. Entries';
+h20.YLabel.FontSize=14;
+h20.YLabel.String='Num. Entries in PubMed';
 h01.Position = [100  100  700  410];
-h20.Position     = [ 0.1    0.38    0.89   0.58];
+h20.Position     = [ 0.1    0.42    0.89   0.55];
 h20.FontName='Arial';
-h20.XLim=[0 numKeywords];
+h20.XLim=[0.25 numKeywords-0.25];
 h20.YLim=[0.5*min(entries_all) 1.2*max(entries_all)];
 h20.YScale = 'log';
 
 grid on
-filename = 'Fig_A_TrendsTechniques.png';
+filename = 'Fig_A_DifferentModels.png';
 %print('-dpng','-r400',filename)
 
 %%
