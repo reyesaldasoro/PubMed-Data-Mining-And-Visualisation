@@ -74,7 +74,7 @@ numYears        = round((val_year)-yearsAnalysis(1)-1);
 initialYear     = 1;
 h02              = figure(2);
 h1              = gca;
-h11             = ribbon(entries_per_KW(index_all,1:end-1)');
+h11             = ribbon(1+entries_per_KW(index_all,1:end-1)');
 h1.YTick        = (1:5:numYears);
 h1.YTickLabel   = years(1:5:end);
 %h1.YLim         = [initialYear numYears+1];
@@ -92,6 +92,7 @@ h1.YLabel.String='Years';
 h1.YLabel.FontSize=14;
 h02.Position = [100  100  700  410];
 h1.Position     = [ 0.11    0.32    0.8605    0.65];
+%%
 %colormap (colormap3(1:end-1,:))
 for i = 1:numKeywords-1
     h1.XTickLabel{i} = [sprintf('\\color[rgb]{%f,%f,%f}%s',colormap3(i,:)) h1.XTickLabel{i}];
