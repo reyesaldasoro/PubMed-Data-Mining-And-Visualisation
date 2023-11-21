@@ -1,7 +1,7 @@
 clear all
 close all
-cd('C:\Users\sbbk034\OneDrive - City, University of London\Documents\GitHub\PubMed-Data-Mining-And-Visualisation\TechniquesTrends')
-
+%cd('C:\Users\sbbk034\OneDrive - City, University of London\Documents\GitHub\PubMed-Data-Mining-And-Visualisation\TechniquesTrends')
+cd('/Users/ccr22/Academic/GitHub/PubMed-Data-Mining/TechniquesTrends')
 
 %% Find out the occurrence of different terms related to cancer AND pathology AND keywords:
 
@@ -9,12 +9,12 @@ allF                    = '%5BAll%20Fields%5D'; % all fields code
 %allF2                    = '%5BMeSH%20Terms%5D'; % all fields code
 basicURL                = 'https://www.ncbi.nlm.nih.gov/pubmed/?term=';
 
-yearsAnalysis           = 1990:2023;                            
-KW_Radiology            =  strcat('%20AND%20(radiology)');
+yearsAnalysis           = 1990:2024;                            
+KW_Radiology            =  strcat('%20AND%20(radiology%20OR%20radiography)');
 KW_Dates                = strcat('%20AND%20(',num2str(yearsAnalysis(1)),':',num2str(yearsAnalysis(end)),'[dp])');
 
 keywords={  'deep learning','artificial intelligence','machine learning',...
-           'convolutional neural','expert systems',...
+           'convolutional neural','expert systems','generative adversarial','Natural Language Processing','ChatGPT',...
             ''};               
 numKeywords = numel(keywords);                       
                        
@@ -36,17 +36,27 @@ for index_kw=1:numKeywords
         PubMedURL2      = strrep(PubMedURL2,'[','');
         years_tokens    = split(PubMedURL2,',');
         %num_entries   = str2num(cell2mat(years_tokens(2:2:end)));
-        
-        for index_year=1:2:numel(years_tokens)
-            val_year    = str2double(years_tokens{index_year});
-            num_entries = str2double(years_tokens{index_year+1});
-            entries_per_KW(index_kw,round((val_year)-(yearsAnalysis(1)-1))) = num_entries;
+        if isempty(years_tokens{1,1})
+            % there is just one year and thus the results are not broken down per
+            % year, add in the last position
+            location_init   = strfind(PubMedURL,'data-results-amount');
+            location_fin    = strfind(PubMedURL,'data-pages-amount');
+            PubMedURL2      = strrep(PubMedURL(location_init+20:location_fin-7),' ','');
+            PubMedURL2      = strrep(PubMedURL2,'"','');
+            num_entries = str2double(PubMedURL2);
+            entries_per_KW(index_kw,numel(yearsAnalysis)-1) = num_entries;           
+        else
+            for index_year=1:2:numel(years_tokens)
+                val_year    = str2double(years_tokens{index_year});
+                num_entries = str2double(years_tokens{index_year+1});
+                entries_per_KW(index_kw,round((val_year)-(yearsAnalysis(1)-1))) = num_entries;
+            end
         end
 end
 years         = str2num(cell2mat(years_tokens(1:2:end)));     
        
 %% Display as bar chart
-h01=figure(1);
+h01=figure(11);
 h20=gca;
 
 allEntries_KW = sum(entries_per_KW(1:end-1,:),2);
@@ -58,6 +68,8 @@ h20.XTickLabelRotation=270;
 h20.FontSize = 11;
 h20.YLabel.FontSize=16;
 h20.YLabel.String='Num. Entries';
+h20.YLim=[10 20000];
+h20.YScale = 'log';
 h01.Position = [100  100  700  410];
 h20.Position     = [ 0.1    0.38    0.89   0.58];
 h20.FontName='Arial';
@@ -72,18 +84,18 @@ filename = 'Fig_A_TrendsTechniques.png';
 %numYears        = numel(years);
 numYears        = round((val_year)-yearsAnalysis(1)-1);
 initialYear     = 1;
-h02              = figure(2);
+h02              = figure(21);
 h1              = gca;
-h11             = ribbon(1+entries_per_KW(index_all,1:end-1)');
+h11             = ribbon(1+entries_per_KW([5 2 7 3   1  4  6  8],1:end-1)');
 h1.YTick        = (1:5:numYears);
 h1.YTickLabel   = years(1:5:end);
 %h1.YLim         = [initialYear numYears+1];
 h1.XTick        = (1:numKeywords);
-h1.XTickLabel   = keywords(index_all);
+h1.XTickLabel   = keywords([5 2 7 3   1  4  6  8]);%   keywords(index_all);
 %h1.XLim         = [1 numKeywords];
 %h1.ZLim         = [0 max(max(entries_per_KW(1:end-1,initialYear:end)))];
 h1.XTickLabelRotation=270;
-h1.View         = [ 170 30];
+h1.View         = [ 60 20];
 h1.FontSize     = 10;
 axis tight
 h1.ZLabel.String='Num. Entries';
@@ -92,7 +104,12 @@ h1.YLabel.String='Years';
 h1.YLabel.FontSize=14;
 h02.Position = [100  100  700  410];
 h1.Position     = [ 0.11    0.32    0.8605    0.65];
+h1.View = [ 54 33]; 
+h1.ZScale='log';
+
 %%
+colormap jet
+colormap3 = 0.7*jet(numKeywords-1);
 %colormap (colormap3(1:end-1,:))
 for i = 1:numKeywords-1
     h1.XTickLabel{i} = [sprintf('\\color[rgb]{%f,%f,%f}%s',colormap3(i,:)) h1.XTickLabel{i}];
