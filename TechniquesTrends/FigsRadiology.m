@@ -13,9 +13,9 @@ yearsAnalysis           = 1990:2024;
 KW_Radiology            =  strcat('%20AND%20(radiology%20OR%20radiography)');
 KW_Dates                = strcat('%20AND%20(',num2str(yearsAnalysis(1)),':',num2str(yearsAnalysis(end)),'[dp])');
 
-keywords={  'deep learning','artificial intelligence','machine learning',...
-           'convolutional neural','expert systems','generative adversarial','Natural Language Processing','ChatGPT',...
-            ''};               
+keywords={  'Deep learning','Artificial intelligence','Machine learning',...
+           'Convolutional neural','Expert systems','Generative adversarial','Natural language processing','ChatGPT',...
+            'Computer vision',''};               
 numKeywords = numel(keywords);                       
                        
         
@@ -56,7 +56,7 @@ end
 years         = str2num(cell2mat(years_tokens(1:2:end)));     
        
 %% Display as bar chart
-h01=figure(11);
+h01=figure(1);
 h20=gca;
 
 allEntries_KW = sum(entries_per_KW(1:end-1,:),2);
@@ -68,14 +68,14 @@ h20.XTickLabelRotation=270;
 h20.FontSize = 11;
 h20.YLabel.FontSize=16;
 h20.YLabel.String='Num. Entries';
-h20.YLim=[10 20000];
+h20.YLim=[10 30000];
 h20.YScale = 'log';
 h01.Position = [100  100  700  410];
-h20.Position     = [ 0.1    0.38    0.89   0.58];
+h20.Position     = [ 0.1    0.40    0.89   0.55];
 h20.FontName='Arial';
 grid on
-filename = 'Fig_A_TrendsTechniques.png';
-%print('-dpng','-r400',filename)
+filename = 'Fig_1_Radiography.png';
+print('-dpng','-r400',filename)
 
 %%
 
@@ -84,18 +84,18 @@ filename = 'Fig_A_TrendsTechniques.png';
 %numYears        = numel(years);
 numYears        = round((val_year)-yearsAnalysis(1)-1);
 initialYear     = 1;
-h02              = figure(21);
+h02              = figure(2);
 h1              = gca;
-h11             = ribbon(1+entries_per_KW([5 2 7 3   1  4  6  8],1:end-1)');
+h11             = ribbon(1+entries_per_KW([ 2  9   7 3 1  4  6  8 5],1:end-1)');
 h1.YTick        = (1:5:numYears);
 h1.YTickLabel   = years(1:5:end);
 %h1.YLim         = [initialYear numYears+1];
 h1.XTick        = (1:numKeywords);
-h1.XTickLabel   = keywords([5 2 7 3   1  4  6  8]);%   keywords(index_all);
+h1.XTickLabel   = keywords([ 2    9 7 3 1  4  6  8 5]);%   keywords(index_all);
 %h1.XLim         = [1 numKeywords];
 %h1.ZLim         = [0 max(max(entries_per_KW(1:end-1,initialYear:end)))];
 h1.XTickLabelRotation=270;
-h1.View         = [ 60 20];
+h1.View         = [ 44 25];
 h1.FontSize     = 10;
 axis tight
 h1.ZLabel.String='Num. Entries';
@@ -116,6 +116,8 @@ for i = 1:numKeywords-1
 end
 %%
 
+filename = 'Fig_2_Radiography.png';
+print('-dpng','-r400',filename)
 
 %% Obtain relative number of entries
 
