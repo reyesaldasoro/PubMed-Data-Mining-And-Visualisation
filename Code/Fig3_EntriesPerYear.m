@@ -45,12 +45,12 @@ CancerEntriesURL        =  strcat(CancerKeyW_1,CancerKeyW_2,CancerKeyW_3,CancerK
 % the publication types. Find the "count" where the number of items of both
 % cases are listed and store in a matrix
 
-yearsAnalysis = 1950%:2016;
+yearsAnalysis = 1950:2025;
 EntriesPerDisease(8,67)=0;
 %% 1,2,3 Years, Total Entries, Cancer Entries
 % Run a series of queries to find out how many entries exist in PubMed for
 % Cancer and in total
-for counterYear =1%:67
+for counterYear =1:numel(yearsAnalysis)
     year                                = yearsAnalysis(counterYear);
 
     EntriesPerDisease(1,year-1949)      = year;
@@ -99,7 +99,7 @@ AIDSKeyW_8         =  'OR%20%22acquired%20immunodeficiency%20syndrome%22%5BAll%2
 AIDSKeyW_9         =  'OR%20%22aids%22%5BAll%20Fields%5D';
 
 AIDSEntriesURL   = strcat(AIDSKeyW_6,AIDSKeyW_7,AIDSKeyW_8,AIDSKeyW_9);
-for counterYear =1:67
+for counterYear =1:numel(yearsAnalysis)
     year                                = yearsAnalysis(counterYear);
     yearURL                             = strcat('AND+%22',num2str(year),'%22%5BDP%5D+');
 
@@ -114,7 +114,7 @@ end
 %% 5 Run the same per year analysis for Malaria 
 MalariaKeyW_10         =  'OR%20%22malaria%22%5BAll%20Fields%5D';
 
-for counterYear =1:67
+for counterYear =1:numel(yearsAnalysis)
     disp([ year])
     % This is the code to select one year in PubMed
     year                                = yearsAnalysis(counterYear);
@@ -132,7 +132,7 @@ end
 %% 6 Tuberculosis
 TuberculosisKeyW_11         =  'OR%20%22tuberculosis%22%5BAll%20Fields%5D';
 
-for counterYear =1:67
+for counterYear =1:numel(yearsAnalysis)
 
     % This is the code to select one year in PubMed
     year                                = yearsAnalysis(counterYear);
@@ -150,7 +150,7 @@ end
 %% 7 Cardiovascular
 CardioKeyW_12         =  'OR%20%22cardiovascular%22%5BAll%20Fields%5D';
 
-for counterYear =1:67
+for counterYear =1:numel(yearsAnalysis)
 
     % This is the code to select one year in PubMed
     year                                = yearsAnalysis(counterYear);
@@ -168,7 +168,7 @@ end
 %% 8 Diabetes
 DiabetesKeyW_13         =  'OR%20%22diabetes%22%5BAll%20Fields%5D';
 
-for counterYear =1:67
+for counterYear =1:numel(yearsAnalysis)
 
     % This is the code to select one year in PubMed
     year                                = yearsAnalysis(counterYear);
@@ -186,7 +186,7 @@ end
 %% 9 stroke
 strokeKeyW_13         =  'OR%20%22stroke%22%5BAll%20Fields%5D';
 
-for counterYear =1:67
+for counterYear =1:numel(yearsAnalysis)
 
     % This is the code to select one year in PubMed
     year                                = yearsAnalysis(counterYear);
@@ -205,7 +205,7 @@ end
 %% 10 infection
 infectionKeyW_13         =  'OR%20%22infection%22%5BAll%20Fields%5D';
 
-for counterYear =1:67
+for counterYear =1:numel(yearsAnalysis)
 
     % This is the code to select one year in PubMed
     year                                = yearsAnalysis(counterYear);
@@ -219,6 +219,26 @@ for counterYear =1:67
     numEntriesPubMed                    = (PubMedURL(locCount_init+16:locCount_init+16+locCount_fin(1)-2));
     EntriesPerDisease(10,year-1949)      = str2double(numEntriesPubMed);
 end
+
+%% 11 infection
+DementiaKeyW_13         =  'OR%20%22dementia%22%5BAll%20Fields%5D';
+
+for counterYear =1:numel(yearsAnalysis)
+
+    % This is the code to select one year in PubMed
+    year                                = yearsAnalysis(counterYear);
+    yearURL                             = strcat('AND+%22',num2str(year),'%22%5BDP%5D+');
+    disp([ year])    
+    urlAddress                          = strcat(basicURL,DementiaKeyW_13,yearURL);
+    % Find the field "Count"
+    PubMedURL                           = urlread(urlAddress);
+    locCount_init                       = strfind(PubMedURL,'count" content="');
+    locCount_fin                        = strfind(PubMedURL(locCount_init+16:locCount_init+300),'"');
+    numEntriesPubMed                    = (PubMedURL(locCount_init+16:locCount_init+16+locCount_fin(1)-2));
+    EntriesPerDisease(11,year-1949)      = str2double(numEntriesPubMed);
+end
+
+
 
 
 
@@ -250,6 +270,7 @@ plot(   yearsAnalysis,EntriesPerDisease(9,:)./EntriesPerDisease(2,:),'color',[0.
 
 plot(   yearsAnalysis,EntriesPerDisease(10,:)./EntriesPerDisease(2,:),'color',[0.25   0.75 0.25],'linestyle',':','linewidth',2);
 
+plot(   yearsAnalysis,EntriesPerDisease(11,:)./EntriesPerDisease(2,:),'color',[0.5   0.5 0.0],'linestyle','-','linewidth',2);
 
 % plot(   yearsAnalysis(6:10:end),EntriesPerDisease(7,6:10:end)./EntriesPerDisease(2,6:10:end),'color',[0.3   0   0.75],'linestyle','none','linewidth',2,'marker','x','markersize',6)
 % plot(   yearsAnalysis(1:10:end),EntriesPerDisease(4,1:10:end)./EntriesPerDisease(2,1:10:end),'color',[0     0   1], 'linestyle','none','linewidth',2,'marker','o','markersize',6)
@@ -261,7 +282,7 @@ plot(   yearsAnalysis,EntriesPerDisease(10,:)./EntriesPerDisease(2,:),'color',[0
 grid on;axis([1950 2016 -.005 0.18])
 set(gca,'Position',[    0.1111    0.1100    0.71    0.8150]);
 
-hLegend3 =legend('Cancer','AIDS','Malaria','Tuberculosis','Cardiovascular','Diabetes','Stroke','Infection','Location','Eastoutside');
+hLegend3 =legend('Cancer','AIDS','Malaria','Tuberculosis','Cardiovascular','Diabetes','Stroke','Infection','Dementia','Location','Eastoutside');
 set(hLegend3,'fontsize',12)
 ylabel('Ratio of Total Entries in PubMed','fontsize',14)
 set(gcf,'Position',[   266   497   817   245])
